@@ -22,6 +22,7 @@ try:
                 for o in numberList:
                     if (n + o == targetSum):
                         raise Found
+# apparently throwing an exception is genuinely the best way to break out of nested loops 🤦‍♂️
 except Found:
     end = time.time()
     print('Day 1 part 1 solution: {0}'.format(n * o))
