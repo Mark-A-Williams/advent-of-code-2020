@@ -1,4 +1,3 @@
-import re
 import time
 
 start = time.time()
@@ -20,11 +19,13 @@ class PasswordWithPolicy:
             and self.password.count(self.requiredCharacter) <= self.secondInt)
 
     def isValidUnderOfficialTobogganCorporatePolicy(self) -> bool:
-        isInFirstPosition = len(self.password) > self.firstInt - 1 and self.password[self.firstInt - 1] == self.requiredCharacter
-        isInSecondPosition = len(self.password) > self.secondInt - 1 and self.password[self.secondInt - 1] == self.requiredCharacter
+        isInFirstPosition = (len(self.password) > self.firstInt - 1
+                            and self.password[self.firstInt - 1] == self.requiredCharacter)
+        isInSecondPosition = (len(self.password) > self.secondInt - 1
+                            and self.password[self.secondInt - 1] == self.requiredCharacter)
         return isInFirstPosition != isInSecondPosition
 
-def parsePassword(rawPassword: str):
+def parsePassword(rawPassword: str) -> PasswordWithPolicy:
     strippedPassword = rawPassword.replace(':','')
     [counts, character, password] = strippedPassword.split(' ')
     [minCount, maxCount] = [int(count) for count in counts.split('-')]
