@@ -1,8 +1,8 @@
-import time
+from executionTimer import executionTimer
 
 # Part 1
 
-start = time.time()
+timer = executionTimer()
 targetSum = 2020
 
 with open('./inputs/1.txt') as file:
@@ -24,13 +24,12 @@ try:
                         raise Found
 # apparently throwing an exception is genuinely the best way to break out of nested loops 🤦‍♂️
 except Found:
-    end = time.time()
     print('Day 1 part 1 solution: {0}'.format(n * o))
-    print('Execution took {0} ms'.format((end - start) * 1000))
+    timer.stopTimer()
 
 # Part 2
 
-start = time.time()
+timer = executionTimer()
 
 try:
     for counter, numberList in enumerate(numbersSuperList):
@@ -45,6 +44,5 @@ try:
                             if (n + o + p == targetSum):
                                 raise Found
 except Found:
-    end = time.time()
     print('Day 1 part 2 solution: {0}'.format(n * o * p))
-    print('Execution took {0} ms'.format((end - start) * 1000))
+    timer.stopTimer()

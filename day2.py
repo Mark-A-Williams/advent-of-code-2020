@@ -1,6 +1,6 @@
-import time
+from executionTimer import executionTimer
 
-start = time.time()
+timer = executionTimer()
 
 class PasswordWithPolicy:
     def __init__(
@@ -40,18 +40,16 @@ validPasswordsCount = 0
 for passwordAndPolicy in passwordsAndPolicies:
     if passwordAndPolicy.isValid(): validPasswordsCount += 1
 
-end = time.time()
 print('Day 2 part 1 solution: {0}'.format(validPasswordsCount))
-print('Execution took {0} ms'.format((end - start) * 1000))
+timer.stopTimer()
 
 # Part 2
 
-start = time.time()
+timer = executionTimer()
 
 validPasswordsCount = 0
 for passwordAndPolicy in passwordsAndPolicies:
     if passwordAndPolicy.isValidUnderOfficialTobogganCorporatePolicy(): validPasswordsCount += 1
         
-end = time.time()
 print('Day 2 part 2 solution: {0}'.format(validPasswordsCount))
-print('Execution took {0} ms'.format((end - start) * 1000))
+timer.stopTimer()
