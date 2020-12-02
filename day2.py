@@ -51,7 +51,6 @@ validPasswordsCount = 0
 for passwordAndPolicy in passwordsAndPolicies:
     if passwordAndPolicy.isValidUnderOfficialTobogganCorporatePolicy(): validPasswordsCount += 1
         
-
 end = time.time()
 print('Day 2 part 2 solution: {0}'.format(validPasswordsCount))
 print('Execution took {0} ms'.format((end - start) * 1000))
