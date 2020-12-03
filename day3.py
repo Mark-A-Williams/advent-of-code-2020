@@ -26,17 +26,11 @@ timer.stopTimer()
 
 timer = executionTimer()
 
-part2SolutionComponents = [
-    numberOfTreesHit(1, 1, pointsPerLine),
-    numberOfTreesHit(3, 1, pointsPerLine),
-    numberOfTreesHit(5, 1, pointsPerLine),
-    numberOfTreesHit(7, 1, pointsPerLine),
-    numberOfTreesHit(1, 2, pointsPerLine)
-]
-
-part2Solution = 1
-for component in part2SolutionComponents:
-    part2Solution *= component
+part2Solution = (numberOfTreesHit(1, 1, pointsPerLine)
+    * numberOfTreesHit(3, 1, pointsPerLine)
+    * numberOfTreesHit(5, 1, pointsPerLine)
+    * numberOfTreesHit(7, 1, pointsPerLine)
+    * numberOfTreesHit(1, 2, pointsPerLine))
 
 print('Day 3 part 2 solution: {0}'.format(part2Solution))
 timer.stopTimer()
