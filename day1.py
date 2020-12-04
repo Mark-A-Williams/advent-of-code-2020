@@ -1,12 +1,11 @@
-from helpers import executionTimer
+from helpers import *
 
 # Part 1
 
 timer = executionTimer()
 targetSum = 2020
 
-with open('./inputs/1.txt') as file:
-    numbers = [int(line.rstrip('\n')) for line in file]
+numbers = getFileLines(1)
 
 evenNumbers = list(filter(lambda x: x%2 == 0, numbers))
 oddNumbers = list(filter(lambda x: x%2 != 0, numbers))

@@ -1,6 +1,4 @@
-from helpers import executionTimer
-
-timer = executionTimer()
+from helpers import *
 
 class PasswordWithPolicy:
     def __init__(
@@ -31,25 +29,29 @@ def parsePassword(rawPassword: str) -> PasswordWithPolicy:
     [minCount, maxCount] = [int(count) for count in counts.split('-')]
     return PasswordWithPolicy(password, character, minCount, maxCount)
 
-# Part 1
+def main():
+    passwordsAndPolicies = [parsePassword(line) for line in getFileLines(2)]
 
-with open('./inputs/2.txt') as file:
-    passwordsAndPolicies = [parsePassword(line.rstrip('\n')) for line in file]
+    # Part 1
 
-validPasswordsCount = 0
-for passwordAndPolicy in passwordsAndPolicies:
-    if passwordAndPolicy.isValid(): validPasswordsCount += 1
+    timer = executionTimer()
+    validPasswordsCount = 0
+    for passwordAndPolicy in passwordsAndPolicies:
+        if passwordAndPolicy.isValid(): validPasswordsCount += 1
 
-print('Day 2 part 1 solution: {0}'.format(validPasswordsCount))
-timer.stopTimer()
+    print('Day 2 part 1 solution: {0}'.format(validPasswordsCount))
+    timer.stopTimer()
 
-# Part 2
+    # Part 2
 
-timer = executionTimer()
+    timer = executionTimer()
 
-validPasswordsCount = 0
-for passwordAndPolicy in passwordsAndPolicies:
-    if passwordAndPolicy.isValidUnderOfficialTobogganCorporatePolicy(): validPasswordsCount += 1
-        
-print('Day 2 part 2 solution: {0}'.format(validPasswordsCount))
-timer.stopTimer()
+    validPasswordsCount = 0
+    for passwordAndPolicy in passwordsAndPolicies:
+        if passwordAndPolicy.isValidUnderOfficialTobogganCorporatePolicy(): validPasswordsCount += 1
+
+    print('Day 2 part 2 solution: {0}'.format(validPasswordsCount))
+    timer.stopTimer()
+
+if __name__ == "__main__":
+    main()
