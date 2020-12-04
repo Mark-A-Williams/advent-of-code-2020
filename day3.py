@@ -1,5 +1,4 @@
-from executionTimer import executionTimer
-from fileHelper import *
+from helpers import *
 
 def numberOfTreesHit(movesRight: int, movesDown: int, pointsPerLine: int, lines: list) -> int:
     treesHit = 0
