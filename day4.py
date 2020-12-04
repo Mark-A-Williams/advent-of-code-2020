@@ -19,28 +19,39 @@ def main():
         "byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"
     ]
 
-    validPassports = 0
+    validPassports1 = []
     for passport in passports:
         if all(field in passport for field in requiredFields):
-            validPassports += 1
+            validPassports1.append(passport)
 
-    print('Day 4 part 1 solution: {0}'.format(validPassports))
+    print('Day 4 part 1 solution: {0}'.format(len(validPassports1)))
     timer.stopTimer()
 
     # Part 2
     timer = executionTimer()
-    validPassports = 0
+    validEyeColours = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
-    for passport in passports:
-        if all(field in passport for field in requiredFields):
-            if (re.match(r'[0-9]{9}', passport['pid'])):
-                if (re.match(r'#[0-9a-f]{6}', passport['hcl'])):
-                    # TODO byr, iyr, eyr, hgt, ecl
-                    validPassports += 1
+    validPassports2 = []
+    for passport in validPassports1:
+        if (re.match(r'^[0-9]{9}$', passport['pid']) and
+            re.match(r'^#[0-9a-f]{6}$', passport['hcl']) and
+            int(passport['byr']) >= 1920 and int(passport['byr']) <= 2002 and
+            int(passport['iyr']) >= 2010 and int(passport['iyr']) <= 2020 and
+            int(passport['eyr']) >= 2020 and int(passport['eyr']) <= 2030 and
+            passport['ecl'] in validEyeColours):
+                hgt = passport['hgt']
+                unit = hgt[-2:]
+                try:
+                    number = int(hgt[:len(hgt)-2])
+                    if ((unit == "in" and number >= 59 and number <= 76) or
+                        unit == "cm" and number >= 150 and number <= 193):
+                        validPassports2.append(passport)
+                except ValueError:
+                    # If the number's not valid, the passport sure as hell ain't 🧠
+                    pass
 
-    print('Day 4 part 2 solution: {0}'.format(validPassports))
+    print('Day 4 part 2 solution: {0}'.format(len(validPassports2)))
     timer.stopTimer()
-
 
 if (__name__ == '__main__'):
     main()
