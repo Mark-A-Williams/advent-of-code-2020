@@ -1,4 +1,4 @@
-def getFileLines(day: int) -> list:
+def getFileLines(day: int) -> list[str]:
 
     """
     Returns the lines of the input for the specified day as a string list,
