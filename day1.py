@@ -2,7 +2,7 @@ from helpers import *
 
 # Part 1
 
-timer = executionTimer()
+timer = ExecutionTimer()
 targetSum = 2020
 
 numbers = getFileLines(1)
@@ -24,11 +24,11 @@ try:
 # apparently throwing an exception is genuinely the best way to break out of nested loops 🤦‍♂️
 except Found:
     print('Day 1 part 1 solution: {0}'.format(n * o))
-    timer.stopTimer()
+    timer.stop()
 
 # Part 2
 
-timer = executionTimer()
+timer = ExecutionTimer()
 
 try:
     for counter, numberList in enumerate(numbersSuperList):
@@ -44,4 +44,4 @@ try:
                                 raise Found
 except Found:
     print('Day 1 part 2 solution: {0}'.format(n * o * p))
-    timer.stopTimer()
+    timer.stop()

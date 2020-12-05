@@ -1,12 +1,12 @@
-from helpers import executionTimer
+from helpers import ExecutionTimer
 import re
 
-def getPassportDictionary() -> list:
+def getPassportDictionary() -> list[dict[str, str]]:
     with open('./inputs/4.txt') as file:
         splitByLineBreaks = file.read().split('\n\n')
         return [mapToDict(block) for block in splitByLineBreaks]
 
-def mapToDict(block: str) -> list:
+def mapToDict(block: str) -> dict[str, str]:
     standardisedFormatBlocks = block.replace(' ', '\n').split('\n')
     return dict(block.split(':') for block in standardisedFormatBlocks)
 
@@ -14,24 +14,24 @@ def main():
     passports = getPassportDictionary()
 
     # Part 1
-    timer = executionTimer()
+    timer = ExecutionTimer()
     requiredFields = [
         "byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"
     ]
 
-    validPassports1 = []
+    validPassports1: list[dict[str, str]] = []
     for passport in passports:
         if all(field in passport for field in requiredFields):
             validPassports1.append(passport)
 
     print('Day 4 part 1 solution: {0}'.format(len(validPassports1)))
-    timer.stopTimer()
+    timer.stop()
 
     # Part 2
-    timer = executionTimer()
+    timer = ExecutionTimer()
     validEyeColours = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
-    validPassports2 = []
+    validPassports2: list[dict[str, str]] = []
     for passport in validPassports1:
         if (re.match(r'^[0-9]{9}$', passport['pid']) and
             re.match(r'^#[0-9a-f]{6}$', passport['hcl']) and
@@ -51,7 +51,7 @@ def main():
                     pass
 
     print('Day 4 part 2 solution: {0}'.format(len(validPassports2)))
-    timer.stopTimer()
+    timer.stop()
 
 if (__name__ == '__main__'):
     main()

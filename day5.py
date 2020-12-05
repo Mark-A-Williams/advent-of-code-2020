@@ -14,17 +14,17 @@ def main():
     boardingPasses = getFileLines(5)
     seatIds: list[int] = []
 
-    timer = executionTimer()
+    timer = ExecutionTimer()
 
     for bp in boardingPasses:
         seatIds.append(parsePassToBinary(bp))
 
     print('Day 5 part 1 solution: {0}'.format(max(seatIds)))
-    timer.stopTimer()
+    timer.stop()
 
     # Part 2
     
-    timer = executionTimer()
+    timer = ExecutionTimer()
     seatIds.sort()
 
     for (counter, seatId) in enumerate(seatIds):
@@ -32,7 +32,7 @@ def main():
             print('Day 5 part 2 solution: {0}'.format(seatId - 1))
             break
 
-    timer.stopTimer()
+    timer.stop()
 
 if __name__ == "__main__":
     main()

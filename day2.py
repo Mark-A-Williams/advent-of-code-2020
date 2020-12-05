@@ -34,24 +34,24 @@ def main():
 
     # Part 1
 
-    timer = executionTimer()
+    timer = ExecutionTimer()
     validPasswordsCount = 0
     for passwordAndPolicy in passwordsAndPolicies:
         if passwordAndPolicy.isValid(): validPasswordsCount += 1
 
     print('Day 2 part 1 solution: {0}'.format(validPasswordsCount))
-    timer.stopTimer()
+    timer.stop()
 
     # Part 2
 
-    timer = executionTimer()
+    timer = ExecutionTimer()
 
     validPasswordsCount = 0
     for passwordAndPolicy in passwordsAndPolicies:
         if passwordAndPolicy.isValidUnderOfficialTobogganCorporatePolicy(): validPasswordsCount += 1
 
     print('Day 2 part 2 solution: {0}'.format(validPasswordsCount))
-    timer.stopTimer()
+    timer.stop()
 
 if __name__ == "__main__":
     main()
