@@ -1,5 +1,23 @@
 from helpers import *
 
+def getCountForGroup(group: list[str]) -> int:
+    lettersInEveryone: list[str] = []
+    for (i, person) in enumerate(group):
+        if (i == 0):
+            for letter in person:
+                lettersInEveryone.append(letter)
+        else:
+            lettersStillInEveryone: list[str] = lettersInEveryone.copy()
+            for letter in lettersInEveryone:
+                if letter not in person:
+                    lettersStillInEveryone.remove(letter)
+                    if len(lettersStillInEveryone) == 0:
+                        return 0
+                    else:
+                        lettersInEveryone = lettersStillInEveryone.copy()
+
+    return len(lettersInEveryone)
+
 def main():
     with open('./inputs/6.txt') as file:
         groups: list[str] = file.read().split('\n\n')
@@ -8,7 +26,6 @@ def main():
 
     timer = ExecutionTimer()
     part1Solution = 0
-    
     compressedGroups = [group.replace("\n", "") for group in groups]
 
     for group in compressedGroups:
@@ -32,24 +49,6 @@ def main():
 
     print('Day 6 part 2 solution: {0}'.format(part2Solution))
     timer.stop()
-
-def getCountForGroup(group: list[str]) -> int:
-    lettersInEveryone: list[str] = []
-    for (i, person) in enumerate(group):
-        if (i == 0):
-            for letter in person:
-                lettersInEveryone.append(letter)
-        else:
-            lettersStillInEveryone: list[str] = lettersInEveryone.copy()
-            for letter in lettersInEveryone:
-                if letter not in person:
-                    lettersStillInEveryone.remove(letter)
-                    if len(lettersStillInEveryone) == 0:
-                        return 0
-                    else:
-                        lettersInEveryone = lettersStillInEveryone.copy()
-
-    return len(lettersInEveryone)
 
 if __name__ == "__main__":
     main()
