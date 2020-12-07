@@ -20,7 +20,12 @@ class Bag:
         return False
 
     def getBagsContainedInBag(self, topLevelBags: list[Bag]) -> int:
-        raise("WIP")
+        count = 0
+        for containedBagDescriptor in self.containedBags.keys():
+            numberOfSubBag = self.containedBags[containedBagDescriptor]
+            topLevelBag = next(bag for bag in topLevelBags if bag.descriptor == containedBagDescriptor)
+            count += numberOfSubBag * (1 + topLevelBag.getBagsContainedInBag(topLevelBags))
+        return count
 
 def setUpBagFromLine(line: str) -> Bag:
     [descriptor, content] = line.split("bags contain")
@@ -47,7 +52,14 @@ def main():
     for bag in allBags:
         if bag.containsBagWithDescriptor(allBags, "shiny gold"):
             count += 1
-    print('Day 7 part 1 solution: {0}'.format(count))
+    print("Day 7 part 1 solution: {0}".format(count))
+    timer.stop()
+
+    # Part 2
+
+    timer = ExecutionTimer()
+    relevantBag = next(bag for bag in allBags if bag.descriptor == "shiny gold")
+    print("Day 7 part 2 solution: {0}".format(relevantBag.getBagsContainedInBag(allBags)))
     timer.stop()
 
 if __name__ == "__main__":
