@@ -1,32 +1,41 @@
 from __future__ import annotations
-from helpers import *
+from helpers import * 
 
 class Bag:
-    def __init__(self, descriptor: str):
+    def __init__(self, descriptor: str, containedBags: list[str]):
         self.descriptor = descriptor
-        self.containedBags: list[str] = []
+        self.containedBags = containedBags
 
-    def containsBagWithDescriptor(self, topLevelBags: list[Bag], descriptor: str) -> bool:
+    def containsBagWithDescriptor(self, topLevelBags: list[Bag], requiredDescriptor: str) -> bool:
+        if requiredDescriptor in self.descriptor:
+            return False
         if len(self.containedBags) == 0:
             return False
-        if any(bag.descriptor == descriptor for bag in self.containedBags):
+        if any(requiredDescriptor in bag for bag in self.containedBags):
             return True
-        for referencedBag in self.containedBags:
-            topLevelBag = next((bag for bag in topLevelBags if bag.descriptor == referencedBag), "none")
-            if (topLevelBag != "none" and topLevelBag.containsBagWithDescriptor()):
+        for containedBagDescriptor in self.containedBags:
+            topLevelBag = next(bag for bag in topLevelBags if bag.descriptor == containedBagDescriptor)
+            if (topLevelBag.containsBagWithDescriptor(topLevelBags, requiredDescriptor)):
                 return True
+        return False
 
-
-def setUpBagFromLine(str: rawLine) -> Bag:
-    # TODO
-    return Bag()
+def setUpBagFromLine(line: str) -> Bag:
+    [descriptor, content] = line.split("bags contain")
+    trimmedDescriptor = descriptor.strip()
+    if "no other bags" in content:
+        return Bag(trimmedDescriptor, [])
+    containedBags = [bag.strip()[2:] for bag in content.rstrip(".").replace("bags", "").replace("bag", "").split(",")]
+    return Bag(trimmedDescriptor, containedBags)
 
 def main():
-    lines = getFileLines(7)
-    for line in lines:
-        [descriptor, content] = line.split(" contain ")
-        if ("gold bag" in content):
-            print(descriptor.rstrip("bags"))
+    timer = ExecutionTimer()
+    allBags = [setUpBagFromLine(line) for line in getFileLines(7)]
+    count = 0
+    for bag in allBags:
+        if bag.containsBagWithDescriptor(allBags, "shiny gold"):
+            count += 1
+    print('Day 7 part 2 solution: {0}'.format(count))
+    timer.stop()
 
 if __name__ == "__main__":
     main()
