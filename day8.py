@@ -9,14 +9,11 @@ class BootCodeInstruction:
         self.value = value
 
 class BootCodeProgram:
-    currentIndex = 0
-    accumulator = 0
-    visitedInstructions: list[int] = []
-
     def __init__(self, instructions: list[BootCodeInstruction]) -> None:
         self.instructions = instructions
 
     def execute(self, handleDuplicates = True) -> int:
+        self.reset()
         numberOfInstructions = len(self.instructions)
         while self.currentIndex not in self.visitedInstructions:
             if self.currentIndex < numberOfInstructions:
@@ -25,10 +22,8 @@ class BootCodeProgram:
             else:
                 return self.accumulator
 
-        finalValue = self.accumulator
-        self.reset()
         if handleDuplicates:
-            return finalValue
+            return self.accumulator
         else:
             raise OverflowError("Infinite loop")
 
@@ -46,6 +41,7 @@ class BootCodeProgram:
             raise ValueError("Invalid instruction code {0}".format(instruction.code))
 
     def reset(self):
+        # these properties are undefined until here which seems a bit cursed
         self.currentIndex = 0
         self.accumulator = 0
         self.visitedInstructions = []
