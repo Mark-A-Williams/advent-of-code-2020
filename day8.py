@@ -16,17 +16,21 @@ class BootCodeProgram:
     def __init__(self, instructions: list[BootCodeInstruction]) -> None:
         self.instructions = instructions
 
-    def execute(self) -> int:
+    def execute(self, handleDuplicates = True) -> int:
         numberOfInstructions = len(self.instructions)
         while self.currentIndex not in self.visitedInstructions:
             if self.currentIndex < numberOfInstructions:
                 nextInstruction = self.instructions[self.currentIndex]
                 self.executeInstruction(nextInstruction)
             else:
-                print(f"Program terminated at instruction {self.currentIndex}")
-                break
-        
-        return self.accumulator
+                return self.accumulator
+
+        finalValue = self.accumulator
+        self.reset()
+        if handleDuplicates:
+            return finalValue
+        else:
+            raise OverflowError("Infinite loop")
 
     def executeInstruction(self, instruction: BootCodeInstruction) -> None:
         self.visitedInstructions.append(self.currentIndex)
@@ -41,19 +45,55 @@ class BootCodeProgram:
         else:
             raise ValueError("Invalid instruction code {0}".format(instruction.code))
 
-def main():
+    def reset(self):
+        self.currentIndex = 0
+        self.accumulator = 0
+        self.visitedInstructions = []
+
+def initialiseProgramFromData() -> BootCodeProgram:
+    data = getFileLines(8)
+
     instructions: list[BootCodeInstruction] = []
-    for (counter, line) in enumerate(getFileLines(8)):
+    for (counter, line) in enumerate(data):
         [code, value] = line.split(" ")
         instructions.append(BootCodeInstruction(counter, code, int(value)))
 
-    program = BootCodeProgram(instructions)
+    return BootCodeProgram(instructions)
+
+def main():
+    program = initialiseProgramFromData()
 
     # Part 1
 
     timer = ExecutionTimer()
     result = program.execute()
-    print("Day 8 part 1 solution: {0}".format(result))
+    print(f"Day 8 part 1 solution: {result}")
+    timer.stop()
+
+    # Part 2
+
+    timer = ExecutionTimer()
+    part2Result: int or None = None
+    for i in range(len(program.instructions)):
+        if program.instructions[i].code == "jmp":
+            program.instructions[i].code = "nop"
+            try:
+                part2Result = program.execute(False)
+                break
+            except OverflowError:
+                pass
+                program.instructions[i].code = "jmp"
+        elif program.instructions[i].code == "nop":
+            program.instructions[i].code = "jmp"
+            try:
+                part2Result = program.execute(False)
+                break
+            except OverflowError:
+                pass
+                program.instructions[i].code = "nop"
+
+    if part2Result is not None:
+        print(f"Day 8 part 2 solution: {part2Result}")
     timer.stop()
 
 if __name__ == "__main__":
