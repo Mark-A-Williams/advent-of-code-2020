@@ -17,14 +17,18 @@ class BootCodeProgram:
         self.instructions = instructions
 
     def execute(self) -> int:
+        numberOfInstructions = len(self.instructions)
         while self.currentIndex not in self.visitedInstructions:
-            nextInstruction = self.instructions[self.currentIndex]
-            self.executeNextInstruction(nextInstruction)
+            if self.currentIndex < numberOfInstructions:
+                nextInstruction = self.instructions[self.currentIndex]
+                self.executeInstruction(nextInstruction)
+            else:
+                print(f"Program terminated at instruction {self.currentIndex}")
+                break
         
         return self.accumulator
 
-    def executeNextInstruction(self, instruction: BootCodeInstruction) -> None:
-        instruction = self.instructions[self.currentIndex]
+    def executeInstruction(self, instruction: BootCodeInstruction) -> None:
         self.visitedInstructions.append(self.currentIndex)
 
         if instruction.code == "nop":
