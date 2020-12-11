@@ -43,15 +43,15 @@ def countOfOccupiedAdjacentSeats(seating: list[list[str]], rowIndex: int, seatIn
 
 def main():
     seating = [list(line) for line in getFileLines(11)]
-    # seating = [list(line) for line in [
-    #     "L.LL.LL.LL","LLLLLLL.LL","L.L.L..L..","LLLL.LL.LL","L.LL.LL.LL","L.LLLLL.LL","..L.L.....","LLLLLLLLLL","L.LLLLLL.L","L.LLLLL.LL"
-    # ]]
 
+    # Part 1
+    
+    timer = ExecutionTimer()
     anyUpdated = True
     updatedSeating: list[list[str]] = []
+
     while anyUpdated:
         anyUpdated, updatedSeating = applyNextStep(seating)
-        print(anyUpdated)
         seating = updatedSeating.copy()
 
     occupiedSeats = 0
@@ -59,10 +59,8 @@ def main():
         for seat in row:
             if seat == "#":
                 occupiedSeats += 1
-
-    print(occupiedSeats)
-
-
+    print(f"Day 11 part 1 solution: {occupiedSeats}")
+    timer.stop()
 
 if __name__ == "__main__":
     main()
