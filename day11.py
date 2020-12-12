@@ -7,7 +7,6 @@ def applyNextStep(
     occupancyCountFunction: Callable[[list[list[str]]], int],
     maximumAdjacencyTolerance: int) -> tuple[bool, list[list[str]]]:
     
-    print(occupancyCountFunction.__name__)
     anyUpdated = False
     updatedSeating = copy.deepcopy(seating)
     for (i, row) in enumerate(seating):
@@ -45,15 +44,43 @@ def simpleAdjacencyCount(seating: list[list[str]], rowIndex: int, seatIndex: int
 
     return adjacentSeats.count("#")
 
+def getIsOccupiedSeatInDirection(
+    seating: list[list[str]],
+    rowIndex: int,
+    seatIndex: int,
+    rowStep: int,
+    seatStep: int) -> bool:
+
+    numberOfRows = len(seating)
+    rowLength = len(seating[0])
+
+    while True:
+        rowIndex += rowStep
+        seatIndex += seatStep
+        if (0 <= rowIndex < numberOfRows) and (0 <= seatIndex < rowLength):
+            nextSeat = seating[rowIndex][seatIndex]
+            if nextSeat == "#":
+                return True
+            elif nextSeat == "L":
+                return False
+        else:
+            return False
+
 def lineOfSightCount(seating: list[list[str]], rowIndex: int, seatIndex: int) -> int:
-    return 0
+    count = 0
+    for rowStep in [-1, 0, 1]:
+        for seatStep in [-1, 0, 1]:
+            if ((rowStep != 0 or seatStep != 0)
+                and getIsOccupiedSeatInDirection(seating, rowIndex, seatIndex, rowStep, seatStep)):
+                count += 1
+    return count
 
 def getFinalOccupiedSeats(seating: list[list[str]], callbackFunc: Callable[[list[list[str]]], int], tolerance: int) -> int:
     anyUpdated = True
     updatedSeating: list[list[str]] = []
 
     while anyUpdated:
-        anyUpdated, updatedSeating = applyNextStep(seating, callbackFunc, 4)
+        anyUpdated, updatedSeating = applyNextStep(seating, callbackFunc, tolerance)
         seating = updatedSeating
 
     result = 0
@@ -65,25 +92,18 @@ def getFinalOccupiedSeats(seating: list[list[str]], callbackFunc: Callable[[list
 
 def main():
     seating = [list(line) for line in getFileLines(11)]
-    # seating = [list(line) for line in [
-    #     "L.LL.LL.LL","LLLLLLL.LL","L.L.L..L..","LLLL.LL.LL","L.LL.LL.LL","L.LLLLL.LL","..L.L.....","LLLLLLLLLL","L.LLLLLL.L","L.LLLLL.LL"
-    # ]]
 
     # Part 1
 
     timer = ExecutionTimer()
-    part1Result = getFinalOccupiedSeats(copy.deepcopy(seating), simpleAdjacencyCount, 4)
+    part1Result = getFinalOccupiedSeats(seating, simpleAdjacencyCount, 4)
     print(f"Day 11 part 1 solution: {part1Result}")
     timer.stop()
 
     # Part 2
 
-    # seating = [list(line) for line in [
-    #     "L.LL.LL.LL","LLLLLLL.LL","L.L.L..L..","LLLL.LL.LL","L.LL.LL.LL","L.LLLLL.LL","..L.L.....","LLLLLLLLLL","L.LLLLLL.L","L.LLLLL.LL"
-    # ]]
-
     timer = ExecutionTimer()
-    part2Result = getFinalOccupiedSeats(copy.deepcopy(seating), lineOfSightCount, 5)
+    part2Result = getFinalOccupiedSeats(seating, lineOfSightCount, 5)
     print(f"Day 11 part 2 solution: {part2Result}")
     timer.stop()
 
