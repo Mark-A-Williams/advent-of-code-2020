@@ -1,4 +1,6 @@
-def getFileLines(day: int) -> list[str]:
+from typing import List
+
+def getFileLines(day: int) -> List[str]:
 
     """
     Returns the lines of the input for the specified day as a string list,
