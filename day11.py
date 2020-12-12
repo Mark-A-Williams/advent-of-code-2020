@@ -4,14 +4,14 @@ import copy
 
 def applyNextStep(
     seating: list[list[str]],
-    occupancyCountFunction: Callable[[list[list[str]]], int],
+    adjacencyCountFunction: Callable[[list[list[str]]], int],
     maximumAdjacencyTolerance: int) -> tuple[bool, list[list[str]]]:
     
     anyUpdated = False
     updatedSeating = copy.deepcopy(seating)
     for (i, row) in enumerate(seating):
         for (j, seat) in enumerate(row):
-            adjacentOccupied = occupancyCountFunction(seating, i, j)
+            adjacentOccupied = adjacencyCountFunction(seating, i, j)
             if seat == "L" and adjacentOccupied == 0:
                 updatedSeating[i][j] = "#"
                 anyUpdated = True
@@ -25,23 +25,14 @@ def simpleAdjacencyCount(seating: list[list[str]], rowIndex: int, seatIndex: int
     rowLength = len(seating[0])
     adjacentSeats = []
 
-    if seatIndex > 0:
-        adjacentSeats.append(seating[rowIndex][seatIndex - 1])
-    if seatIndex < rowLength - 1:
-        adjacentSeats.append(seating[rowIndex][seatIndex + 1])
-    if rowIndex > 0:
-        adjacentSeats.append(seating[rowIndex - 1][seatIndex])
-        if seatIndex > 0:
-            adjacentSeats.append(seating[rowIndex - 1][seatIndex - 1])
-        if seatIndex < rowLength - 1:
-            adjacentSeats.append(seating[rowIndex - 1][seatIndex + 1])
-    if rowIndex < numberOfRows - 1:
-        adjacentSeats.append(seating[rowIndex + 1][seatIndex])
-        if seatIndex > 0:
-            adjacentSeats.append(seating[rowIndex + 1][seatIndex - 1])
-        if seatIndex < rowLength - 1:
-            adjacentSeats.append(seating[rowIndex + 1][seatIndex + 1])
-
+    for rowStep in [-1, 0, 1]:
+        for seatStep in [-1, 0, 1]:
+            if rowStep != 0 or seatStep != 0:
+                nextRowIndex = rowIndex + rowStep
+                nextSeatIndex = seatIndex + seatStep
+                if (0 <= nextRowIndex < numberOfRows) and (0 <= nextSeatIndex < rowLength): 
+                    adjacentSeats.append(seating[nextRowIndex][nextSeatIndex])
+   
     return adjacentSeats.count("#")
 
 def getIsOccupiedSeatInDirection(
@@ -75,12 +66,16 @@ def lineOfSightCount(seating: list[list[str]], rowIndex: int, seatIndex: int) ->
                 count += 1
     return count
 
-def getFinalOccupiedSeats(seating: list[list[str]], callbackFunc: Callable[[list[list[str]]], int], tolerance: int) -> int:
+def getFinalOccupiedSeats(
+    seating: list[list[str]],
+    adjacencyCountFunction: Callable[[list[list[str]]], int],
+    tolerance: int) -> int:
+
     anyUpdated = True
     updatedSeating: list[list[str]] = []
 
     while anyUpdated:
-        anyUpdated, updatedSeating = applyNextStep(seating, callbackFunc, tolerance)
+        anyUpdated, updatedSeating = applyNextStep(seating, adjacencyCountFunction, tolerance)
         seating = updatedSeating
 
     result = 0
