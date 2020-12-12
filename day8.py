@@ -1,4 +1,5 @@
 from helpers import *
+from typing import List
 
 class BootCodeInstruction:
     def __init__(self, id: int, code: str, value: int) -> None:
@@ -9,7 +10,7 @@ class BootCodeInstruction:
         self.value = value
 
 class BootCodeProgram:
-    def __init__(self, instructions: list[BootCodeInstruction]) -> None:
+    def __init__(self, instructions: List[BootCodeInstruction]) -> None:
         self.instructions = instructions
 
     def execute(self, handleDuplicates = True) -> int:
@@ -49,7 +50,7 @@ class BootCodeProgram:
 def initialiseProgramFromData() -> BootCodeProgram:
     data = getFileLines(8)
 
-    instructions: list[BootCodeInstruction] = []
+    instructions: List[BootCodeInstruction] = []
     for (counter, line) in enumerate(data):
         [code, value] = line.split(" ")
         instructions.append(BootCodeInstruction(counter, code, int(value)))

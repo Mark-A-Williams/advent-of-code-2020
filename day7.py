@@ -1,12 +1,13 @@
 from __future__ import annotations
-from helpers import * 
+from helpers import *
+from typing import List
 
 class Bag:
     def __init__(self, descriptor: str, containedBags: dict[str, int]):
         self.descriptor = descriptor
         self.containedBags = containedBags
 
-    def containsBagWithDescriptor(self, topLevelBags: list[Bag], requiredDescriptor: str) -> bool:
+    def containsBagWithDescriptor(self, topLevelBags: List[Bag], requiredDescriptor: str) -> bool:
         if requiredDescriptor in self.descriptor:
             return False
         if len(self.containedBags) == 0:
@@ -19,7 +20,7 @@ class Bag:
                 return True
         return False
 
-    def getBagsContainedInBag(self, topLevelBags: list[Bag]) -> int:
+    def getBagsContainedInBag(self, topLevelBags: List[Bag]) -> int:
         count = 0
         for containedBagDescriptor in self.containedBags.keys():
             numberOfSubBag = self.containedBags[containedBagDescriptor]

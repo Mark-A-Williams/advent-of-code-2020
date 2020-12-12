@@ -1,5 +1,6 @@
 from helpers import *
-    
+from typing import List
+
 def parsePassToBinary(boardingPass: str) -> int:
     return int(boardingPass
         .replace("F", "0")
@@ -12,7 +13,7 @@ def main():
     # Part 1
 
     boardingPasses = getFileLines(5)
-    seatIds: list[int] = []
+    seatIds: List[int] = []
 
     timer = ExecutionTimer()
 

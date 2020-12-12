@@ -1,7 +1,8 @@
 from helpers import ExecutionTimer
 import re
+from typing import List
 
-def getPassportDictionary() -> list[dict[str, str]]:
+def getPassportDictionary() -> List[dict[str, str]]:
     with open('./inputs/4.txt') as file:
         splitByLineBreaks = file.read().split('\n\n')
         return [mapToDict(block) for block in splitByLineBreaks]
@@ -19,7 +20,7 @@ def main():
         "byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"
     ]
 
-    validPassports1: list[dict[str, str]] = []
+    validPassports1: List[dict[str, str]] = []
     for passport in passports:
         if all(field in passport for field in requiredFields):
             validPassports1.append(passport)
@@ -31,7 +32,7 @@ def main():
     timer = ExecutionTimer()
     validEyeColours = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
-    validPassports2: list[dict[str, str]] = []
+    validPassports2: List[dict[str, str]] = []
     for passport in validPassports1:
         if (re.match(r'^[0-9]{9}$', passport['pid']) and
             re.match(r'^#[0-9a-f]{6}$', passport['hcl']) and

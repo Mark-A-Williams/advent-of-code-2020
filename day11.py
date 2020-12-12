@@ -1,11 +1,11 @@
 from helpers import *
-from typing import Callable
+from typing import Callable, List, Tuple
 import copy
 
 def applyNextStep(
-    seating: list[list[str]],
-    adjacencyCountFunction: Callable[[list[list[str]]], int],
-    maximumAdjacencyTolerance: int) -> tuple[bool, list[list[str]]]:
+    seating: List[List[str]],
+    adjacencyCountFunction: Callable[[List[List[str]]], int],
+    maximumAdjacencyTolerance: int) -> Tuple[bool, List[List[str]]]:
     
     anyUpdated = False
     updatedSeating = copy.deepcopy(seating)
@@ -20,7 +20,7 @@ def applyNextStep(
                 anyUpdated = True
     return anyUpdated, updatedSeating
 
-def simpleAdjacencyCount(seating: list[list[str]], rowIndex: int, seatIndex: int) -> int:
+def simpleAdjacencyCount(seating: List[List[str]], rowIndex: int, seatIndex: int) -> int:
     numberOfRows = len(seating)
     rowLength = len(seating[0])
     adjacentSeats = []
@@ -36,7 +36,7 @@ def simpleAdjacencyCount(seating: list[list[str]], rowIndex: int, seatIndex: int
     return adjacentSeats.count("#")
 
 def getIsOccupiedSeatInDirection(
-    seating: list[list[str]],
+    seating: List[List[str]],
     rowIndex: int,
     seatIndex: int,
     rowStep: int,
@@ -57,7 +57,7 @@ def getIsOccupiedSeatInDirection(
         else:
             return False
 
-def lineOfSightCount(seating: list[list[str]], rowIndex: int, seatIndex: int) -> int:
+def lineOfSightCount(seating: List[List[str]], rowIndex: int, seatIndex: int) -> int:
     count = 0
     for rowStep in [-1, 0, 1]:
         for seatStep in [-1, 0, 1]:
@@ -67,12 +67,12 @@ def lineOfSightCount(seating: list[list[str]], rowIndex: int, seatIndex: int) ->
     return count
 
 def getFinalOccupiedSeats(
-    seating: list[list[str]],
-    adjacencyCountFunction: Callable[[list[list[str]]], int],
+    seating: List[List[str]],
+    adjacencyCountFunction: Callable[[List[List[str]]], int],
     tolerance: int) -> int:
 
     anyUpdated = True
-    updatedSeating: list[list[str]] = []
+    updatedSeating: List[List[str]] = []
 
     while anyUpdated:
         anyUpdated, updatedSeating = applyNextStep(seating, adjacencyCountFunction, tolerance)

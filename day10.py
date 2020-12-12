@@ -1,6 +1,7 @@
 from helpers import *
+from typing import List
 
-def getRequiredJoltages(joltages: list[int]) -> list[int]:
+def getRequiredJoltages(joltages: List[int]) -> List[int]:
     requiredJoltages = []
     for (counter, joltage) in enumerate(joltages):
         if counter > 0:
@@ -9,7 +10,7 @@ def getRequiredJoltages(joltages: list[int]) -> list[int]:
                 requiredJoltages.append(joltage)
     return requiredJoltages
 
-def getOptionalChunks(allJoltages: list[int], requiredJoltages: list[int]) -> list[list[int]]:
+def getOptionalChunks(allJoltages: List[int], requiredJoltages: List[int]) -> List[List[int]]:
     allChunks = []
     chunk = []
     requiredJoltagesInCurrentChunk = 0

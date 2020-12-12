@@ -1,13 +1,14 @@
 from helpers import *
+from typing import List
 
-def getCountForGroup(group: list[str]) -> int:
-    lettersInEveryone: list[str] = []
+def getCountForGroup(group: List[str]) -> int:
+    lettersInEveryone: List[str] = []
     for (i, person) in enumerate(group):
         if (i == 0):
             for letter in person:
                 lettersInEveryone.append(letter)
         else:
-            lettersStillInEveryone: list[str] = lettersInEveryone.copy()
+            lettersStillInEveryone: List[str] = lettersInEveryone.copy()
             for letter in lettersInEveryone:
                 if letter not in person:
                     lettersStillInEveryone.remove(letter)
@@ -20,7 +21,7 @@ def getCountForGroup(group: list[str]) -> int:
 
 def main():
     with open('./inputs/6.txt') as file:
-        groups: list[str] = file.read().split('\n\n')
+        groups: List[str] = file.read().split('\n\n')
 
     # Part 1
 
@@ -29,7 +30,7 @@ def main():
     compressedGroups = [group.replace("\n", "") for group in groups]
 
     for group in compressedGroups:
-        uniqueCharacters: list[str] = []
+        uniqueCharacters: List[str] = []
         for char in group:
             if not (char in uniqueCharacters):
                 uniqueCharacters.append(char)

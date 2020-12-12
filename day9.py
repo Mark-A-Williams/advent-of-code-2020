@@ -1,8 +1,9 @@
 from helpers import *
+from typing import List
 
 class Fine(Exception): pass
 
-def anyInListSumToNumber(number: int, numberList: list[int]) -> bool:
+def anyInListSumToNumber(number: int, numberList: List[int]) -> bool:
     for x in numberList:
         for y in numberList:
             if x + y == number:
@@ -12,10 +13,10 @@ def anyInListSumToNumber(number: int, numberList: list[int]) -> bool:
 def tryFindListAddingToNumberStartingAtIndex(
     index: int,
     target: int,
-    allNumbers: list[int]) -> list[int]:
+    allNumbers: List[int]) -> List[int]:
 
     sum = 0
-    listSoFar: list[int] = []
+    listSoFar: List[int] = []
     nextIndex = index
 
     while sum < target:
@@ -48,7 +49,7 @@ def main():
 
     # Part 2
 
-    succeedingList: list[int] = None
+    succeedingList: List[int] = None
     for i in range(len(allNumbers)):
         succeedingList = tryFindListAddingToNumberStartingAtIndex(i, part1result, allNumbers)
         if succeedingList is not None:
